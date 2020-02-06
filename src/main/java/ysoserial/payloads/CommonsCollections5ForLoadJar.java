@@ -85,7 +85,6 @@ public class CommonsCollections5ForLoadJar extends
     }
 
     public static void main(String[] args) throws Exception {
-        PayloadRunner.runDeserialize = true;
         PayloadRunner.run(CommonsCollections5ForLoadJar.class, args);
     }
 

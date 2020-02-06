@@ -59,7 +59,6 @@ public class CommonsCollections4 implements ObjectPayload<Queue<Object>> {
 	}
 
 	public static void main(final String[] args) throws Exception {
-	    PayloadRunner.runDeserialize = true;
 		PayloadRunner.run(CommonsCollections4.class, args);
 	}
 }

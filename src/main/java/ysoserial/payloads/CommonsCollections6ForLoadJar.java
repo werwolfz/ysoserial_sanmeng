@@ -116,7 +116,6 @@ public class CommonsCollections6ForLoadJar extends PayloadRunner implements Obje
     }
 
     public static void main(final String[] args) throws Exception {
-//        PayloadRunner.runDeserialize = true;
         PayloadRunner.run(CommonsCollections6ForLoadJar.class, args);
     }
 }
