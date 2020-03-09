@@ -40,13 +40,13 @@ public class TestHarnessTest {
 	}
 
 	public static class ExecMockPayload implements ObjectPayload<ExecMockSerializable> {
-		public ExecMockSerializable getObject(String command) throws Exception {
-			return new ExecMockSerializable(command);
+		public ExecMockSerializable getObject(String ... command) throws Exception {
+			return new ExecMockSerializable(command[0]);
 		}
 	}
 
 	public static class NoopMockPayload implements ObjectPayload<Integer> {
-		public Integer getObject(String command) throws Exception {
+		public Integer getObject(String ... command) throws Exception {
 			return 1;
 		}
 	}

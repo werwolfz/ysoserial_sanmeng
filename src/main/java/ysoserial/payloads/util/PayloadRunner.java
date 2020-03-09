@@ -2,6 +2,7 @@ package ysoserial.payloads.util;
 
 import java.io.File;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.concurrent.Callable;
 
@@ -32,10 +33,10 @@ public class PayloadRunner {
         // ensure payload generation doesn't throw an exception
         byte[] serialized = new ExecCheckingSecurityManager().callWrapped(new Callable<byte[]>() {
             public byte[] call() throws Exception {
-                final String command =
-                    args.length > 0 && args[0] != null ? args[0] : getDefaultTestCmd();
+                final String[] command =
+                    args.length > 0 && args[0] != null ? args : new String[] {getDefaultTestCmd()};
 
-                System.out.println("generating payload object(s) for command: '" + command + "'");
+                System.out.println("generating payload object(s) for command: '" + Arrays.toString(command) + "'");
 
                 ObjectPayload<?> payload = clazz.newInstance();
                 final Object objBefore = payload.getObject(command);

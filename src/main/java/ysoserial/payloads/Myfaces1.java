@@ -44,8 +44,8 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.MBECHLER })
 public class Myfaces1 implements ObjectPayload<Object>, DynamicDependencies {
 
-    public Object getObject ( String command ) throws Exception {
-        return makeExpressionPayload(command);
+    public Object getObject ( String ... command ) throws Exception {
+        return makeExpressionPayload(command[0]);
     }
 
 

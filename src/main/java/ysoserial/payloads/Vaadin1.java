@@ -55,19 +55,19 @@ public class Vaadin1 implements ObjectPayload<Object>
 //                |  TemplatesImpl.getOutputProperties()           |
 //                |                                                |
 //                +------------------------------------------------+
-    
+
     @Override
-    public Object getObject (String command) throws Exception
+    public Object getObject (String ... command) throws Exception
     {
-        Object templ = Gadgets.createTemplatesImpl (command);
-        PropertysetItem pItem = new PropertysetItem ();        
-        
+        Object templ = Gadgets.createTemplatesImpl (command[0]);
+        PropertysetItem pItem = new PropertysetItem ();
+
         NestedMethodProperty<Object> nmprop = new NestedMethodProperty<Object> (templ, "outputProperties");
         pItem.addItemProperty ("outputProperties", nmprop);
-        
+
         BadAttributeValueExpException b = new BadAttributeValueExpException ("");
         Reflections.setFieldValue (b, "val", pItem);
-        
+
         return b;
     }
 

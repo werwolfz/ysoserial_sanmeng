@@ -48,9 +48,9 @@ public class FileUpload1 implements ReleaseableObjectPayload<DiskFileItem> {
         return JavaVersion.isAtLeast(7);
     }
 
-    public DiskFileItem getObject ( String command ) throws Exception {
+    public DiskFileItem getObject ( String ... command ) throws Exception {
 
-        String[] parts = command.split(";");
+        String[] parts = command[0].split(";");
 
         if ( parts.length == 3 && "copyAndDelete".equals(parts[ 0 ]) ) {
             return copyAndDelete(parts[ 1 ], parts[ 2 ]);

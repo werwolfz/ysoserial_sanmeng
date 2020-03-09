@@ -67,8 +67,8 @@ import net.sf.json.JSONObject;
 @Authors({ Authors.MBECHLER })
 public class JSON1 implements ObjectPayload<Object> {
 
-    public Map getObject ( String command ) throws Exception {
-        return makeCallerChain(Gadgets.createTemplatesImpl(command), Templates.class);
+    public Map getObject ( String ... command ) throws Exception {
+        return makeCallerChain(Gadgets.createTemplatesImpl(command[0]), Templates.class);
     }
 
 

