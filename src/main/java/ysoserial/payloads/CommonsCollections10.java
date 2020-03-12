@@ -77,6 +77,6 @@ public class CommonsCollections10 extends PayloadRunner implements ObjectPayload
     }
 
     public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsCollections9.class, args);
+        PayloadRunner.run(CommonsCollections10.class, args);
     }
 }

