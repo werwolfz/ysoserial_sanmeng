@@ -59,7 +59,7 @@ public class Vaadin1 implements ObjectPayload<Object>
     @Override
     public Object getObject (String ... command) throws Exception
     {
-        Object templ = Gadgets.createTemplatesImpl (command[0]);
+        Object templ = Gadgets.createTemplatesImpl (command);
         PropertysetItem pItem = new PropertysetItem ();
 
         NestedMethodProperty<Object> nmprop = new NestedMethodProperty<Object> (templ, "outputProperties");

