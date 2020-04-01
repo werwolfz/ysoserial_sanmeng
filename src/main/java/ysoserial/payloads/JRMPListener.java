@@ -52,7 +52,6 @@ public class JRMPListener extends PayloadRunner implements ObjectPayload<Unicast
 
 
     public static void main ( final String[] args ) throws Exception {
-        PayloadRunner.runDeserialize = true;
         PayloadRunner.run(JRMPListener.class, new String[] {"8889"});
     }
 }
