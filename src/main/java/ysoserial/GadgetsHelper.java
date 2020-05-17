@@ -21,6 +21,12 @@ public class GadgetsHelper {
         cmds.add(CommonsCollections10.class);
         cmds.add(CommonsCollections11.class);
         cmds.add(Jdk7u21.class);
+        cmds.add(Vaadin1.class);
+        cmds.add(ROME.class);
+        cmds.add(Spring1.class);
+        cmds.add(Spring2.class);
+        cmds.add(BeanShell1.class);
+        cmds.add(Groovy1.class);
         gadgets.put("CMD", cmds);
 
         Set<Class<? extends ObjectPayload>> jar = new HashSet<>();
@@ -31,6 +37,7 @@ public class GadgetsHelper {
 
         Set<Class<? extends ObjectPayload>> codebase = new HashSet<>();
         codebase.add(C3P0.class);
+        codebase.add(Myfaces2.class);
         gadgets.put("CODEBASE", codebase);
     }
 

