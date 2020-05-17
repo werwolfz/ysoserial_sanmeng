@@ -25,7 +25,7 @@ public class PayloadRunner {
 
     public static boolean runDeserialize = false;
 
-    public static boolean printBase64payload = false;
+    public static boolean printBase64payload = true;
     public static boolean printUrlEncodeBase64payload = false;
 
     public static void run(final Class<? extends ObjectPayload<?>> clazz, final String[] args)
@@ -36,12 +36,12 @@ public class PayloadRunner {
                 final String[] command =
                     args.length > 0 && args[0] != null ? args : new String[] {getDefaultTestCmd()};
 
-                System.out.println("generating payload object(s) for command: '" + Arrays.toString(command) + "'");
+//                System.out.println("generating payload object(s) for command: '" + Arrays.toString(command) + "'");
 
                 ObjectPayload<?> payload = clazz.newInstance();
                 final Object objBefore = payload.getObject(command);
 
-                System.out.println("serializing payload");
+//                System.out.println("serializing payload");
                 byte[] ser = Serializer.serialize(objBefore);
                 Utils.releasePayload(payload, objBefore);
                 if (printBase64payload) {
