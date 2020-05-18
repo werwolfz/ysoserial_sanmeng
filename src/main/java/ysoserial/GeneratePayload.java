@@ -31,7 +31,7 @@ public class GeneratePayload {
 		final String payloadType = args[0];
 		final String[] commands = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[0];
 
-		Set<Class<? extends ObjectPayload>> payloadClasss = new HashSet<>();
+		List<Class<? extends ObjectPayload>> payloadClasss = new ArrayList<>();
 		final Class<? extends ObjectPayload> payloadClass = Utils.getPayloadClass(payloadType);
 		if (payloadClass == null) {
             payloadClasss.addAll(GadgetsHelper.get(payloadType));
