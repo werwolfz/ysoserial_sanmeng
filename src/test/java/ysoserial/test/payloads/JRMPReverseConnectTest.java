@@ -30,7 +30,7 @@ public class JRMPReverseConnectTest implements CustomTest {
 
 
     public void run ( Callable<Object> payload ) throws Exception {
-        JRMPListener l = new JRMPListener(port, new BadAttributeValueExpException("foo"));
+        JRMPListener l = new JRMPListener(port, "", new BadAttributeValueExpException("foo"));
         Thread t = new Thread(l, "JRMP listener");
         try {
             t.start();
