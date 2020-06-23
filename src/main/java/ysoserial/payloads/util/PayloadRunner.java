@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.concurrent.Callable;
 
-import sun.misc.BASE64Encoder;
 import ysoserial.Deserializer;
 import ysoserial.Serializer;
 
