@@ -9,6 +9,7 @@ import ysoserial.payloads.BeanShell1;
 import ysoserial.payloads.C3P0;
 import ysoserial.payloads.CommonsBeanutils1;
 import ysoserial.payloads.CommonsCollections10;
+import ysoserial.payloads.CommonsCollections10ForLoadJar;
 import ysoserial.payloads.CommonsCollections11;
 import ysoserial.payloads.CommonsCollections3ForLoadJar;
 import ysoserial.payloads.CommonsCollections5ForLoadJar;
@@ -22,6 +23,7 @@ import ysoserial.payloads.ObjectPayload;
 import ysoserial.payloads.ROME;
 import ysoserial.payloads.Spring1;
 import ysoserial.payloads.Spring2;
+import ysoserial.payloads.URLDNS;
 import ysoserial.payloads.Vaadin1;
 
 /**
@@ -51,12 +53,17 @@ public class GadgetsHelper {
         jar.add(CommonsCollections3ForLoadJar.class);
         jar.add(CommonsCollections5ForLoadJar.class);
         jar.add(CommonsCollections6ForLoadJar.class);
+        jar.add(CommonsCollections10ForLoadJar.class);
         gadgets.put("JAR", jar);
 
         List<Class<? extends ObjectPayload>> codebase = new ArrayList<>();
         codebase.add(C3P0.class);
         codebase.add(Myfaces2.class);
         gadgets.put("CODEBASE", codebase);
+
+        List<Class<? extends ObjectPayload>> urldns = new ArrayList<>();
+        urldns.add(URLDNS.class);
+        gadgets.put("URLDNS", codebase);
     }
 
     public static String getName(String type, int index) {
