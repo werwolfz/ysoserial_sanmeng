@@ -21,15 +21,9 @@ public class PayloadRunner {
         // ensure payload generation doesn't throw an exception
         byte[] serialized = new ExecCheckingSecurityManager().callWrapped(new Callable<byte[]>() {
             public byte[] call() throws Exception {
-                final String[] command =
-                    args.length > 0 && args[0] != null ? args : new String[] {getDefaultTestCmd()};
-
-//                System.out.println("generating payload object(s) for command: '" + Arrays.toString(command) + "'");
-
+                final String[] command = args;
                 ObjectPayload<?> payload = clazz.newInstance();
                 final Object objBefore = payload.getObject(command);
-
-//                System.out.println("serializing payload");
                 byte[] ser = objBefore instanceof byte[] ? (byte[]) objBefore : Serializer.serialize(objBefore);
                 Utils.releasePayload(payload, objBefore);
                 return ser;
@@ -40,7 +34,6 @@ public class PayloadRunner {
 
         if (runDeserialize) {
             try {
-                System.out.println("deserializing payload");
                 final Object objAfter = Deserializer.deserialize(serialized);
             } catch (Exception e) {
                 e.printStackTrace();

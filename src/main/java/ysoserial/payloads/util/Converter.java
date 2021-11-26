@@ -32,6 +32,10 @@ public class Converter {
             dos.writeLong((Long) obj);
         } else if (obj instanceof String) {
             dos.writeUTF((String) obj);
+        } else if (obj instanceof Float) {
+            dos.writeFloat((Float) obj);
+        }  else if (obj instanceof Double) {
+            dos.writeDouble((Double) obj);
         } else {
             ByteArrayOutputStream ba = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(ba);
