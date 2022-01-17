@@ -20,8 +20,112 @@ import ysoserial.payloads.util.Converter;
 import ysoserial.payloads.util.JavaVersion;
 import ysoserial.payloads.util.PayloadRunner;
 
-
 /**
+ * 随便弄弄，版本没测，可以用 ysoserial.SuidLookup 跑
+ *
+ * [
+ *     {
+ *         "class":"net.sf.json.JSONObject",
+ *         "suid":-5159560445913960199,
+ *         "desc":"net.sf.json-lib:json-lib:jdk15"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections.map.LazyMap",
+ *         "suid":7990956402564206740,
+ *         "desc":"commons-collections:commons-collections"
+ *     },
+ *     {
+ *         "class":"com.sun.syndication.feed.impl.ObjectBean",
+ *         "suid":-9036182525298043830,
+ *         "desc":"rome:rome"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections.functors.ChainedTransformer",
+ *         "suid":3514945074733160196,
+ *         "desc":"commons-collections:commons-collections"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections.keyvalue.TiedMapEntry",
+ *         "suid":-8453869361373831205,
+ *         "desc":"commons-collections:commons-collections"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections4.functors.InstantiateTransformer",
+ *         "suid":3786388740793356347,
+ *         "desc":"org.apache.commons:commons-collections"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.beanutils.BeanComparator",
+ *         "suid":-2044202215314119608,
+ *         "desc":"commons-beanutils:commons-beanutils"
+ *     },
+ *     {
+ *         "class":"com.mchange.v2.c3p0.PoolBackedDataSource",
+ *         "suid":-2440162180985815128,
+ *         "desc":"com.mchange:c3p0"
+ *     },
+ *     {
+ *         "class":"org.mozilla.javascript.NativeJavaObject",
+ *         "suid":-6948590651130498591,
+ *         "desc":"rhino:js"
+ *     },
+ *     {
+ *         "class":"bsh.Interpreter",
+ *         "suid":-3957541217794112454,
+ *         "desc":"org.beanshell:bsh"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.fileupload.disk.DiskFileItem",
+ *         "suid":2237570099615271025,
+ *         "desc":"commons-fileupload:commons-fileupload"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections4.bag.TreeBag",
+ *         "suid":-7740146511091606676,
+ *         "desc":"org.apache.commons:commons-collections"
+ *     },
+ *     {
+ *         "class":"org.codehaus.groovy.runtime.ConvertedClosure",
+ *         "suid":1162833713450835227,
+ *         "desc":"org.codehaus.groovy:groovy"
+ *     },
+ *     {
+ *         "class":"org.jboss.weld.interceptor.spi.model.InterceptionModel",
+ *         "suid":3800260388412693137,
+ *         "desc":"org.jboss.weld:weld-core"
+ *     },
+ *     {
+ *         "class":"org.apache.commons.collections4.comparators.TransformingComparator",
+ *         "suid":3456940356043606220,
+ *         "desc":"org.apache.commons:commons-collections"
+ *     },
+ *     {
+ *         "class":"org.jboss.interceptor.reader.ReflectiveClassMetadata",
+ *         "suid":-2088679292389273922,
+ *         "desc":"org.jboss.interceptor:jboss-interceptor-core"
+ *     },
+ *     {
+ *         "class":"org.apache.myfaces.view.facelets.el.ValueExpressionMethodExpression",
+ *         "suid":-2847633717581167765,
+ *         "desc":"org.apache.myfaces.core:myfaces-impl"
+ *     },
+ *     {
+ *         "class":"com.vaadin.data.util.NestedMethodProperty",
+ *         "suid":6242635371098225051,
+ *         "desc":"com.vaadin:vaadin-server"
+ *     },
+ *     {
+ *         "class":"org.python.core.PyBytecode",
+ *         "suid":-6010342697849248238,
+ *         "desc":"org.python:jython-standalone"
+ *     },
+ *     {
+ *         "class":"org.hibernate.property.Getter",
+ *         "suid":397515195902559519,
+ *         "desc":"org.hibernate:hibernate-core"
+ *     }
+ * ]
+ *
  * 用于检测反序列化环境中存在的class，主要利用URLDNS的gadget进行check
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -126,5 +230,4 @@ public class CheckClassURLDNS implements ObjectPayload<byte[]> {
         // lazymap.******.ceye.io   org.apache.commons.collections.map.LazyMap  7990956402564206740
 		PayloadRunner.run(CheckClassURLDNS.class, args);
 	}
-
 }

